@@ -1,53 +1,28 @@
 package edu.ujcv.progra2;
 
-import java.io.Serializable;
+import org.supercsv.cellprocessor.ParseDate;
+import org.supercsv.cellprocessor.constraint.LMinMax;
+import org.supercsv.cellprocessor.constraint.NotNull;
+import org.supercsv.cellprocessor.constraint.StrRegEx;
+import org.supercsv.cellprocessor.constraint.UniqueHashCode;
+import org.supercsv.cellprocessor.ift.CellProcessor;
+import org.supercsv.io.CsvBeanReader;
+import org.supercsv.prefs.CsvPreference;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Optional;
+
+
+
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
-        Integer[] array = new Integer[5];
-        initArray(array,5);
-
-        Integer[] array2 = new Integer[8];
-        initArray(array2,8);
-
-        Object[] respuesta = concatArray(array,array2);
-        printArray(respuesta);
-
-       // Object[] respuesta2 = intercalar(array,array2);
-
-       // printArray(respuesta2);
-
-
-
-        //concatArray(array,array2);
-        // 5,5,5,5,5,8,8,8,8,8,8,8,8
-
-        //concatArray(array2,array);
-        // 8,8,8,8,8,8,8,8,5,5,5,5,5
-
-        //intercalarArray
-
-        //separarArreglo
-        //[4,4,4,5,5,6,7,8] [4,4,2,9,6]
-        //5,5,7,8
-
-        // busqueda
-        // [3,5,2,8,9] 2
-        //    2
-        // [3,5,2,8,9] 10
-        //  -1
-
-        //ordenar
-        // [3,5,2,8,9]
-        // [2,3,5,8,9]
-
-        //printArray
-
-        Float[] arreglo = new Float[5];
-        //initArray(arreglo,5.5);
-
+       AlumnosController ac= new AlumnosController();
+       ac.presentMenuObtenerResultado();
+       ac.presentarListaAlumnos();
 
     }
 
@@ -78,9 +53,27 @@ public class Main {
         return retval;
 
     }
+    public static <T>T[] intercalar(T[] a1, T[] a2){
+        T[] retval = (T[])new Object[a1.length+ a2.length];
 
+        int min = Math.min(a1.length,a2.length);
+        for (int i = 0 ; i < min ; i++) {
+            retval[i*2] = a1[i];
+            retval[i*2+1] = a2[i];
+        }
+        if(a1.length< a2.length){
+            System.arraycopy(a2,a1.length,retval,a1.length * 2, a2.length - a1.length);
+        }else
+        {
+            System.arraycopy(a1,a2.length,retval,a2.length * 2,a1.length - a2.length);
+        }
+        return retval;
+    }
 
     public static <T>void printArray(T[] a){
+
+        if(a == null)
+            return;
 
         for (int i = 0; i < a.length; i++) {
             if(i == a.length -1)
@@ -89,6 +82,40 @@ public class Main {
                 System.out.print(a[i]+", ");
         }
         System.out.println();
+    }
+
+    public static <T>T[] separar(T[] a1, T[] a2){
+        int tamano= 0;
+
+        for (int i = 0; i < a1.length; i++) {
+            boolean cuento = true;
+            for (int j = i; j < a2.length ; j++) {
+                if(a1[i] == a2[j]){
+                    cuento = false;
+                    break;
+                }
+            }
+            if(cuento && i < a2.length) tamano++;
+
+        }
+
+        T[] retval = (T[])new Object[tamano];
+
+        for (int i = 0, k = 0; i < a1.length; i++) {
+            boolean agrego = true;
+            for (int j = i; j < a2.length ; j++) {
+                if(a1[i] == a2[j]){
+                    agrego = false;
+                    break;
+                }
+            }
+            if(agrego && i < a2.length) retval[k++] = a1[i];
+
+        }
+
+
+
+        return  retval;
     }
 
 
