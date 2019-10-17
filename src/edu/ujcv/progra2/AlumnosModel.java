@@ -1,5 +1,6 @@
 package edu.ujcv.progra2;
 
+
 import org.supercsv.cellprocessor.constraint.NotNull;
 import org.supercsv.cellprocessor.ift.CellProcessor;
 import org.supercsv.io.CsvBeanReader;
