@@ -25,6 +25,6 @@ public class Main {
        ac.presentarListaAlumnos();
 
     }
-    
+
 }
 
